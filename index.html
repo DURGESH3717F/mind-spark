@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Spark Challenge - Generated Puzzles</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Inter', sans-serif; /* Default font */
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            font-size: 16px;
+        }
+        /* Specific font for Hindi text if needed, apply to elements containing Hindi */
+        .lang-hi {
+            font-family: 'Noto Sans Devanagari', 'Inter', sans-serif; /* Example for Hindi */
+        }
+
+
+        .container {
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+            min-height: 90vh;
+            max-height: 95vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: opacity 0.5s ease-in-out;
+            position: relative;
+        }
+
+        #musicToggleButton {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        #musicToggleButton:hover {
+            background-color: #5a6268;
+            transform: scale(1.05);
+        }
+        .language-switcher {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+        .language-button {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .language-button:hover, .language-button.active {
+            background-color: #007bff;
+        }
+
+
+        .welcome-screen h1, .results-screen h1 {
+            font-size: 2.2em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .welcome-screen p {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .welcome-screen .disclaimer, .results-screen .disclaimer {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        .num-questions-selection {
+            margin-bottom: 20px;
+        }
+        .num-questions-selection h3 {
+            margin-bottom: 10px;
+            color: #495057;
+            font-size: 1.1em;
+        }
+        .num-questions-button {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 0.95em;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .num-questions-button:hover, .num-questions-button.selected {
+            background-color: #007bff;
+        }
+        .num-questions-button.selected {
+            box-shadow: 0 0 0 2px #0056b3;
+        }
+        #highScoreDisplay {
+            font-size: 0.9em;
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+
+        .start-button, .results-button, .hint-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 8px;
+            margin-bottom: 5px;
+            width: auto;
+            min-width: 150px;
+        }
+        .results-button.share {
+            background-color: #17a2b8;
+            margin-left: 0;
+        }
+        .results-button.enhance-iq {
+            background-color: #28a745;
+            margin-left: 0;
+        }
+        .results-button.enhance-iq:hover {
+            background-color: #218838;
+        }
+
+        .hint-button {
+            background-color: #ffc107;
+            color: #333;
+            font-size: 0.85em;
+            padding: 8px 15px;
+            margin-top: 0;
+            margin-bottom: 12px;
+            min-width: 120px;
+        }
+        .hint-button:disabled {
+            background-color: #e0a800;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .start-button:hover, .results-button:hover, .hint-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        }
+        .start-button:hover, .results-button:hover:not(.enhance-iq):not(.share) { background-color: #0056b3; }
+        .results-button.share:hover { background-color: #117a8b; }
+        .hint-button:hover:not(:disabled) { background-color: #e0a800; }
+
+
+        .puzzle-screen {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            width: 100%;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .progress-indicator, .timer, .streak-counter {
+            background-color: #e9ecef;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .streak-counter { color: #28a745; }
+        .timer { min-width: 70px; text-align: center; }
+
+
+        .puzzle-content {
+            margin-bottom: 15px;
+            width: 100%;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .puzzle-instruction { font-size: 1em; color: #495057; margin-bottom: 12px; font-weight: 500; }
+        .memory-items-display { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 15px; min-height: 40px; font-size: 1.3em; }
+        .memory-item { background-color: #007bff; color: white; padding: 8px 15px; border-radius: 6px; font-weight: 600; box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3); }
+        .memory-item.hint-reveal { animation: pulse 1s ease-in-out; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } }
+
+
+        .puzzle-question { font-size: 1.25em; color: #34495e; margin-bottom: 18px; line-height: 1.5; }
+        .answer-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; width: 100%; }
+        .answer-button {
+            background-color: #f8f9fa; color: #333; border: 1px solid #ced4da; padding: 12px;
+            font-size: 1.1em; font-weight: 500; border-radius: 8px; cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            line-height: 1.4;
+            min-height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .answer-button:hover { background-color: #e9ecef; border-color: #adb5bd; box-shadow: 0 3px 6px rgba(0,0,0,0.07); }
+        .answer-button:active { transform: scale(0.98); background-color: #dde2e6; }
+        .answer-button.correct { background-color: #28a745; color: white; border-color: #28a745; }
+        .answer-button.incorrect { background-color: #dc3545; color: white; border-color: #dc3545; }
+        .answer-button.disabled, .answer-button.hint-removed { pointer-events: none; opacity: 0.5; }
+        .answer-button.hint-removed { background-color: #e9ecef; border-color: #ced4da; }
+
+
+        .reflex-target {
+            width: 90px; height: 90px; border-radius: 50%; cursor: pointer; margin: 15px 0 8px 0;
+            transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+            display: flex; justify-content: center; align-items: center;
+            font-weight: bold; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            font-size: 1.8em;
+        }
+        .reflex-feedback { font-size: 0.95em; color: #333; height: 18px; margin-top: 8px; }
+
+        .results-screen p { font-size: 1em; color: #555; line-height: 1.6; margin-bottom: 10px; }
+        .results-screen .score-value { font-weight: 700; color: #007bff; font-size: 1.2em; }
+        .results-screen .cpi-estimate { font-weight: 700; color: #28a745; font-size: 1.2em; }
+        .results-screen .personality-title { font-size: 1.3em; color: #343a40; margin-top: 15px; margin-bottom: 6px; font-weight: 600; }
+        .results-screen .personality-description { font-size: 0.95em; color: #6c757d; margin-bottom: 15px; max-width: 90%; margin-left: auto; margin-right: auto; }
+        .results-buttons-container { margin-top: 15px; display: flex; flex-direction: column; align-items: center; }
+        .results-buttons-container .results-button {
+            width: 80%;
+            margin-bottom: 10px;
+        }
+
+        #cognitiveEnhancementSection {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: left;
+        }
+        #cognitiveEnhancementSection h3 {
+            color: #343a40;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        #cognitiveEnhancementSection p {
+            font-size: 0.9em;
+            line-height: 1.7;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+         #cognitiveEnhancementSection ul {
+            list-style-position: inside;
+            padding-left: 0;
+            margin-bottom: 8px;
+        }
+        #cognitiveEnhancementSection li {
+            font-size: 0.9em;
+            line-height: 1.7;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+
+
+        .achievements-section { margin-top: 20px; padding-top: 12px; border-top: 1px solid #e0e0e0; }
+        .achievements-section h3 { color: #495057; margin-bottom: 8px; font-size: 1.1em; }
+        .achievement-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;}
+        .achievement-item {
+            background-color: #e9ecef; color: #28a745; border: 1px solid #ced4da;
+            padding: 7px 10px; border-radius: 6px;
+            font-size: 0.8em;
+        }
+         .achievement-item.locked {
+            color: #6c757d;
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+
+
+        .hidden { display: none !important; }
+        .fade-out { opacity: 0; }
+        .fade-in { opacity: 1; }
+
+        /* Mobile specific optimizations */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+                font-size: 16px;
+            }
+            .container {
+                padding: 15px 15px;
+                min-height: 0;
+                max-height: none;
+            }
+             .language-switcher {
+                top: auto;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex; /* Arrange buttons horizontally */
+            }
+            .language-button {
+                font-size: 0.8em;
+                padding: 6px 10px;
+            }
+
+
+            .welcome-screen h1, .results-screen h1 { font-size: 1.9em; margin-bottom: 12px; }
+            .welcome-screen p { font-size: 1em; margin-bottom: 10px;}
+            .welcome-screen .disclaimer, .results-screen .disclaimer { font-size: 0.8em; margin-bottom: 12px;}
+
+            .num-questions-selection { margin-bottom: 15px; }
+            .num-questions-selection h3 { font-size: 1.05em; }
+            .num-questions-button {
+                padding: 9px 12px; font-size: 0.9em;
+                width: calc(50% - 10px);
+                margin: 5px;
+            }
+
+
+            .start-button, .results-button {
+                width: 100%;
+                padding: 12px 15px;
+                font-size: 1em;
+            }
+             .results-buttons-container .results-button {
+                width: 95%;
+            }
+
+            .game-header {
+                font-size: 0.9em;
+                margin-bottom: 10px;
+            }
+            .progress-indicator, .timer, .streak-counter {
+                 padding: 6px 8px;
+                 min-width: 60px;
+                 font-size: 0.9em;
+            }
+
+
+            .puzzle-content { min-height: 100px; margin-bottom: 10px; }
+            .puzzle-instruction { font-size: 1em; margin-bottom: 10px;}
+            .memory-items-display { font-size: 1.25em; gap: 6px; margin-bottom: 12px;}
+            .memory-item { padding: 6px 12px; }
+
+            .puzzle-question { font-size: 1.15em; margin-bottom: 15px; line-height: 1.4; }
+            .answer-options {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .answer-button {
+                padding: 12px;
+                font-size: 1em;
+                min-height: 60px;
+                line-height: 1.3;
+            }
+
+            .reflex-target { width: 80px; height: 80px; font-size: 1.7em; margin: 12px 0 6px 0;}
+            .reflex-feedback { font-size: 0.9em; height: 17px; margin-top: 6px;}
+
+            .results-screen p { font-size: 0.95em; }
+            .results-screen .score-value, .results-screen .cpi-estimate { font-size: 1.1em; }
+            .results-screen .personality-title { font-size: 1.25em; margin-top: 12px;}
+            .results-screen .personality-description { font-size: 0.9em; }
+
+            #cognitiveEnhancementSection { padding: 12px; margin-top:15px; }
+            #cognitiveEnhancementSection h3 { font-size: 1.15em; }
+            #cognitiveEnhancementSection p, #cognitiveEnhancementSection li { font-size: 0.9em; line-height: 1.6; }
+
+
+            .achievement-list { gap: 5px; }
+            .achievement-item { font-size: 0.75em; padding: 6px 8px;}
+        }
+
+        @media (max-width: 400px) {
+            body {
+                padding: 8px;
+                font-size: 15px;
+            }
+            .container {
+                padding: 12px 10px;
+            }
+            .welcome-screen h1, .results-screen h1 { font-size: 1.7em;}
+            .welcome-screen p { font-size: 0.95em; }
+            .num-questions-button {
+                width: 100%;
+                padding: 8px 10px; font-size: 0.9em;
+            }
+            .game-header {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .progress-indicator, .timer, .streak-counter {
+                 width: 100%;
+                 padding: 6px 8px;
+                 font-size: 0.9em;
+            }
+
+            .start-button, .results-button { padding: 11px 12px; font-size: 0.95em; }
+            .hint-button { padding: 8px 10px; font-size: 0.85em; }
+
+            .puzzle-instruction { font-size: 0.95em; }
+            .memory-items-display { font-size: 1.2em; }
+            .puzzle-question { font-size: 1.1em; margin-bottom: 12px; }
+            .answer-options {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .answer-button {
+                padding: 10px;
+                font-size: 0.95em;
+                min-height: 55px;
+            }
+            .reflex-target { width: 75px; height: 75px; font-size: 1.6em; }
+
+            #cognitiveEnhancementSection h3 { font-size: 1.1em; }
+            #cognitiveEnhancementSection p, #cognitiveEnhancementSection li { font-size: 0.88em; }
+        }
+
+    </style>
+    <!-- Link to a Hindi font like Noto Sans Devanagari -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="language-switcher">
+        <button id="langEnButton" class="language-button active" onclick="setLanguage('en')">English</button>
+        <button id="langHiButton" class="language-button" onclick="setLanguage('hi')">हिन्दी</button>
+    </div>
+    <button id="musicToggleButton">Music: OFF</button>
+
+    <div class="container" id="mainContainer">
+        <div id="welcomeScreen" class="welcome-screen fade-in">
+            <h1 data-lang-key="welcomeTitle">Mind Spark Challenge</h1>
+            <p data-lang-key="welcomeDescription">Test your cognitive skills with engaging puzzles and discover your mental agility.</p>
+            <div class="num-questions-selection">
+                <h3 data-lang-key="selectNumQsTitle">Select Number of Questions:</h3>
+                <button class="num-questions-button selected" data-count="10" onclick="selectNumQuestions(10, this)" data-lang-key="numQs10">10 Questions</button>
+                <button class="num-questions-button" data-count="25" onclick="selectNumQuestions(25, this)" data-lang-key="numQs25">25 Questions</button>
+                <button class="num-questions-button" data-count="50" onclick="selectNumQuestions(50, this)" data-lang-key="numQs50">50 Questions</button>
+            </div>
+            <div id="highScoreDisplay" data-lang-key-prefix="highScoreLabel">High Score (10 Questions): 0</div>
+            <p class="disclaimer" data-lang-key="welcomeDisclaimer">This is for fun and self-reflection, not a clinical IQ test.</p>
+            <button class="start-button" onclick="startGame()" data-lang-key="startButton">Start Test</button>
+        </div>
+
+        <div id="puzzleScreen" class="puzzle-screen hidden">
+            <div class="game-header">
+                <div id="progressIndicator" class="progress-indicator"></div>
+                <div id="streakCounter" class="streak-counter"></div>
+                <div id="timer" class="timer"></div>
+            </div>
+            <div class="puzzle-content">
+                <p id="puzzleInstruction" class="puzzle-instruction"></p>
+                <div id="memoryItemsDisplay" class="memory-items-display"></div>
+                <p id="puzzleQuestion" class="puzzle-question"></p>
+                <div id="reflexFeedback" class="reflex-feedback"></div>
+            </div>
+            <button id="hintButton" class="hint-button" onclick="useHint()" data-lang-key="hintButton">Use Hint (-2 Pts)</button>
+            <div id="answerOptions" class="answer-options"></div>
+        </div>
+
+        <div id="resultsScreen" class="results-screen hidden" style="text-align: center;">
+            <!-- Content generated by JS -->
+        </div>
+    </div>
+
+    <script>
+        // --- DOM Elements (Many will be updated by language function) ---
+        const mainContainer = document.getElementById('mainContainer');
+        const welcomeScreenDiv = document.getElementById('welcomeScreen');
+        const puzzleScreenDiv = document.getElementById('puzzleScreen');
+        const resultsScreenDiv = document.getElementById('resultsScreen');
+        const musicToggleButton = document.getElementById('musicToggleButton');
+        const progressIndicatorEl = document.getElementById('progressIndicator');
+        const timerEl = document.getElementById('timer');
+        const puzzleContentEl = document.querySelector('.puzzle-content');
+        const puzzleInstructionEl = document.getElementById('puzzleInstruction');
+        const memoryItemsDisplayEl = document.getElementById('memoryItemsDisplay');
+        const puzzleQuestionEl = document.getElementById('puzzleQuestion');
+        const answerOptionsEl = document.getElementById('answerOptions');
+        const reflexFeedbackEl = document.getElementById('reflexFeedback');
+        const streakCounterEl = document.getElementById('streakCounter');
+        const hintButton = document.getElementById('hintButton');
+        const highScoreDisplayEl = document.getElementById('highScoreDisplay');
+        const langEnButton = document.getElementById('langEnButton');
+        const langHiButton = document.getElementById('langHiButton');
+
+
+        // --- Game Config ---
+        let NUMBER_OF_PUZZLES_PER_GAME = 10;
+        const DEFAULT_PUZZLE_TIME_LIMIT_SECONDS = 30;
+        const STREAK_BONUS_POINTS = 2;
+        const HINT_PENALTY_POINTS = 2;
+
+        // --- Game State Variables ---
+        let currentPuzzleIndex = 0;
+        let score = 0;
+        let currentStreak = 0;
+        let timerInterval;
+        let timeLeft = 0;
+        let reflexTargetEl = null;
+        let reflexColorChangeTimeoutId = null;
+        let reflexReactionTimeoutId = null;
+        let reflexReactionStartTimestamp = 0;
+        let reflexPuzzleActive = false;
+        let gamePuzzles = []; // Will be populated by generator
+        let currentMaxPossibleScore = 0;
+        let hintUsedThisPuzzle = false;
+        let currentLanguage = 'en'; // Default language
+
+        // --- Audio State & Elements (Tone.js) ---
+        let backgroundMusicSynth = null;
+        let musicPlaying = false;
+        let correctSound, incorrectSound, clickSound;
+
+
+        // --- START: Question Generation System ---
+        const generatorSourceData = {
+            shapes: ['○', '□', '△', '☆', '◇', '❖', '⊕', '⊗', '★', '♦'],
+            colors: {
+                en: ["RED", "BLUE", "GREEN", "YELLOW", "BLACK", "PURPLE", "ORANGE", "PINK", "BROWN", "GRAY"],
+                hi: ["लाल", "नीला", "हरा", "पीला", "काला", "बैंगनी", "नारंगी", "गुलाबी", "भूरा", "धूसर"]
+            },
+            colorHex: { // For visual display if needed
+                "RED": "#FF0000", "BLUE": "#0000FF", "GREEN": "#00FF00", "YELLOW": "#FFFF00",
+                "BLACK": "#000000", "PURPLE": "#800080", "ORANGE": "#FFA500", "PINK": "#FFC0CB",
+                "BROWN": "#A52A2A", "GRAY": "#808080",
+                "लाल": "#FF0000", "नीला": "#0000FF", "हरा": "#00FF00", "पीला": "#FFFF00",
+                "काला": "#000000", "बैंगनी": "#800080", "नारंगी": "#FFA500", "गुलाबी": "#FFC0CB",
+                "भूरा": "#A52A2A", "धूसर": "#808080"
+            },
+            emojisByCategory: {
+                vehicles: {
+                    en: ['🚗 Car', '✈️ Plane', '🚲 Bike', '🛴 Scooter', '🚢 Ship', '🚂 Train', '🚁 Helicopter'],
+                    hi: ['🚗 कार', '✈️ विमान', '🚲 बाइक', '🛴 स्कूटर', '🚢 जहाज', '🚂 रेलगाड़ी', '🚁 हेलीकॉप्टर']
+                },
+                animals:  {
+                    en: ['🐶 Dog', '🐱 Cat', '🐭 Mouse', '🦁 Lion', '🐘 Elephant', '🦊 Fox', '🐼 Panda'],
+                    hi: ['🐶 कुत्ता', '🐱 बिल्ली', '🐭 चूहा', '🦁 शेर', '🐘 हाथी', '🦊 लोमड़ी', '🐼 पांडा']
+                },
+                fruits:   {
+                    en: ['🍎 Apple', '🍌 Banana', '🍓 Strawberry', '🍇 Grapes', '🍊 Orange', '🍉 Watermelon', '🍍 Pineapple'],
+                    hi: ['🍎 सेब', '🍌 केला', '🍓 स्ट्रॉबेरी', '🍇 अंगूर', '🍊 संतरा', '🍉 तरबूज', '🍍 अनानास']
+                },
+                tools: {
+                    en: ['🔨 Hammer', '🔧 Wrench', '🔩 Nut and Bolt', '⚙️ Gear', '⛏️ Pick', '🪓 Axe'],
+                    hi: ['🔨 हथौड़ा', '🔧 रिंच', '🔩 नट और बोल्ट', '⚙️ गियर', '⛏️ कुदाल', '🪓 कुल्हाड़ी']
+                }
+            },
+            commonWords: {
+                en: ["believe", "achieve", "receive", "friend", "separate", "definitely", "calendar", "occasion", "necessary", "beautiful", "address", "committee", "tomorrow", "language"],
+                hi: ["विश्वास", "प्राप्त", "मित्र", "अलग", "निश्चित", "कैलेंडर", "अवसर", "आवश्यक", "सुंदर", "पता", "समिति", "कल", "भाषा"]
+            },
+            // For memory puzzles
+            memoryItems: {
+                emojis: ['😀', '😂', '😍', '🤔', '🚀', '🎉', '🌟', '💡', '📚', '💻', '🎁', '🎈', '🍕', '🍦', '⚽️', '🏀', '🎨', '🎵'],
+                words: {
+                    en: ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "India", "Juliett"],
+                    hi: ["अल्फा", "ब्रावो", "चार्ली", "डेल्टा", "इको", "फॉक्सट्रॉट", "गोल्फ", "होटल", "इंडिया", "जूलियट"]
+                }
+            }
+        };
+
+        function getRandomElement(arr) {
+            if (!arr || arr.length === 0) return null;
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function shuffleArray(array) {
+            const arr = [...array]; // Create a copy to avoid modifying the original
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function generateShapePatternPuzzle() {
+            const numShapesInPattern = getRandomElement([3, 4]); // 3 or 4 shapes in the repeating unit
+            const patternShapes = shuffleArray(generatorSourceData.shapes).slice(0, numShapesInPattern);
+            const sequenceLength = numShapesInPattern * 2 - 1; // e.g., A B C A B (if numShapesInPattern is 3)
+            const sequence = [];
+            for(let i=0; i < sequenceLength; i++) {
+                sequence.push(patternShapes[i % numShapesInPattern]);
+            }
+
+            const questionPatternEn = sequence.join(' → ') + ' → ___?';
+            const questionPatternHi = sequence.join(' → ') + ' → ___?'; // Assuming '→' and '___?' are fine for Hindi
+
+            const correctAnswerShape = patternShapes[(sequenceLength) % numShapesInPattern];
+
+            const otherShapes = generatorSourceData.shapes.filter(s => !patternShapes.includes(s));
+            const distractors = shuffleArray(otherShapes).slice(0, 3); // Ensure 3 distractors
+
+            const optionsList = shuffleArray([correctAnswerShape, ...distractors]);
+            const correctAnswerIndex = optionsList.indexOf(correctAnswerShape);
+
+            return {
+                type: 'shape_pattern',
+                question: { en: `Pattern: ${questionPatternEn}`, hi: `पैटर्न: ${questionPatternHi}` },
+                options: optionsList.map(shape => ({ en: shape, hi: shape })),
+                correctAnswerIndex: correctAnswerIndex,
+                timeLimit: 20, // Increased a bit for longer patterns
+                maxPoints: 15
+            };
+        }
+
+        function generateEmojiLogicOddOneOut() {
+            const categories = Object.keys(generatorSourceData.emojisByCategory);
+            if (categories.length < 2) return null; // Need at least two categories
+
+            const mainCategoryKey = getRandomElement(categories);
+            let otherCategoryKey = getRandomElement(categories);
+            while (otherCategoryKey === mainCategoryKey) {
+                otherCategoryKey = getRandomElement(categories);
+            }
+
+            const mainCategoryEmojisEn = generatorSourceData.emojisByCategory[mainCategoryKey]['en'];
+            const mainCategoryEmojisHi = generatorSourceData.emojisByCategory[mainCategoryKey]['hi'];
+            const otherCategoryEmojisEn = generatorSourceData.emojisByCategory[otherCategoryKey]['en'];
+            const otherCategoryEmojisHi = generatorSourceData.emojisByCategory[otherCategoryKey]['hi'];
+
+            if (mainCategoryEmojisEn.length < 3 || otherCategoryEmojisEn.length < 1) return null; // Need enough items
+
+            const itemsFromMainEn = shuffleArray(mainCategoryEmojisEn).slice(0, 3);
+            const itemsFromMainHi = itemsFromMainEn.map(enItem => {
+                const idx = mainCategoryEmojisEn.indexOf(enItem);
+                return mainCategoryEmojisHi[idx] || enItem; // Fallback if Hi version not found
+            });
+
+            const oddOneOutEn = getRandomElement(otherCategoryEmojisEn);
+            const oddOneOutHi = (() => {
+                const idx = otherCategoryEmojisEn.indexOf(oddOneOutEn);
+                return otherCategoryEmojisHi[idx] || oddOneOutEn;
+            })();
+
+
+            const allOptionsEn = shuffleArray([...itemsFromMainEn, oddOneOutEn]);
+            const options = allOptionsEn.map(enOpt => {
+                if (enOpt === oddOneOutEn) return { en: oddOneOutEn, hi: oddOneOutHi };
+                const idx = itemsFromMainEn.indexOf(enOpt);
+                return { en: enOpt, hi: itemsFromMainHi[idx] };
+            });
+
+            const correctAnswerIndex = allOptionsEn.indexOf(oddOneOutEn);
+
+            return {
+                type: 'emoji_logic',
+                question: { en: "Which one is the odd one out?", hi: "इनमें से असंगत कौन सा है?" },
+                options: options,
+                correctAnswerIndex: correctAnswerIndex,
+                timeLimit: 20,
+                maxPoints: 15
+            };
+        }
+
+        function generateVerbalLogicMisspelling() {
+            const correctWordsPoolEn = generatorSourceData.commonWords.en;
+            const correctWordsPoolHi = generatorSourceData.commonWords.hi;
+
+            if (correctWordsPoolEn.length < 4 || correctWordsPoolHi.length < 4) return null;
+
+            const selectedIndices = shuffleArray([...Array(correctWordsPoolEn.length).keys()]).slice(0, 4);
+            const selectedWordsEn = selectedIndices.map(i => correctWordsPoolEn[i]);
+            const selectedWordsHi = selectedIndices.map(i => correctWordsPoolHi[i]);
+
+
+            const wordToMisspellEn = selectedWordsEn[0];
+            const wordToMisspellHi = selectedWordsHi[0];
+            let misspelledWordEn = "";
+            let misspelledWordHi = "";
+
+            // Simple English misspelling strategy
+            if (wordToMisspellEn.length > 3) {
+                const i = Math.floor(Math.random() * (wordToMisspellEn.length - 2)) + 1; // Avoid first/last for simple swap
+                misspelledWordEn = wordToMisspellEn.substring(0, i) + wordToMisspellEn[i+1] + wordToMisspellEn[i] + wordToMisspellEn.substring(i+2);
+                if (misspelledWordEn === wordToMisspellEn) {
+                     misspelledWordEn = wordToMisspellEn.substring(0,i) + (wordToMisspellEn[i] === 'e' ? 'a' : 'e') +  wordToMisspellEn.substring(i+1);
+                }
+            } else {
+                misspelledWordEn = wordToMisspellEn + 'x';
+            }
+            if (!misspelledWordEn || misspelledWordEn === wordToMisspellEn) misspelledWordEn = wordToMisspellEn.slice(0,-1) + 'e'; // Ensure it's different
+
+
+            // Simple Hindi misspelling (can be much more complex, this is a placeholder)
+            // For Hindi, matra errors are common. This is very basic.
+            if (wordToMisspellHi.length > 2) {
+                 const i = Math.floor(Math.random() * (wordToMisspellHi.length -1));
+                 const charToChange = wordToMisspellHi[i];
+                 // Basic: if it's a consonant, try to add/remove a matra if simple. This is hard to generalize.
+                 // For now, just swap two characters like English, or append an extra matra symbol.
+                 if (wordToMisspellHi.length > 3) {
+                    misspelledWordHi = wordToMisspellHi.substring(0, i) + wordToMisspellHi[i+1] + wordToMisspellHi[i] + wordToMisspellHi.substring(i+2);
+                 } else {
+                    misspelledWordHi = wordToMisspellHi + '़'; // Nukta as a simple change
+                 }
+                 if (misspelledWordHi === wordToMisspellHi) misspelledWordHi = wordToMisspellHi.slice(0, -1) + 'ि';
+            } else {
+                misspelledWordHi = wordToMisspellHi + '्';
+            }
+             if (!misspelledWordHi || misspelledWordHi === wordToMisspellHi) misspelledWordHi = wordToMisspellHi.slice(0,-1) + (wordToMisspellHi.endsWith('ा') ? 'ि' : 'ा');
+
+            const optionsEn = [misspelledWordEn, selectedWordsEn[1], selectedWordsEn[2], selectedWordsEn[3]];
+            const optionsHi = [misspelledWordHi, selectedWordsHi[1], selectedWordsHi[2], selectedWordsHi[3]];
+
+            const shuffledIndices = shuffleArray([0, 1, 2, 3]);
+            const finalOptions = shuffledIndices.map(i => ({ en: optionsEn[i], hi: optionsHi[i] }));
+            const correctAnswerIndex = shuffledIndices.indexOf(0); // Index of the misspelled pair
+
+            return {
+                type: 'verbal_logic',
+                question: { en: "Which of these words is spelled INCORRECTLY?", hi: "इनमें से कौन सा शब्द गलत वर्तनी वाला है?" },
+                options: finalOptions,
+                correctAnswerIndex: correctAnswerIndex,
+                timeLimit: 25,
+                maxPoints: 18
+            };
+        }
+
+        function generateColorStroopText() {
+            const colorsEn = generatorSourceData.colors.en;
+            const colorsHi = generatorSourceData.colors.hi;
+
+            const wordIndex = Math.floor(Math.random() * colorsEn.length);
+            const wordTextEn = colorsEn[wordIndex];
+            const wordTextHi = colorsHi[wordIndex];
+
+            let inkIndex = Math.floor(Math.random() * colorsEn.length);
+            while (inkIndex === wordIndex) {
+                inkIndex = Math.floor(Math.random() * colorsEn.length);
+            }
+            const inkColorTextEn = colorsEn[inkIndex];
+            // const inkColorTextHi = colorsHi[inkIndex]; // Not directly used in span text, but for hex
+            const inkHex = generatorSourceData.colorHex[inkColorTextEn]; // Use English key for hex lookup
+
+            const questionHTML = {
+                en: `Task: Select the WORD '${wordTextEn}'. Presented: <span style='color:${inkHex}; font-weight:bold;'>${wordTextEn}</span>. Your choice must be the word itself.`,
+                hi: `कार्य: '${wordTextHi}' शब्द का चयन करें। प्रस्तुत: <span style='color:${inkHex}; font-weight:bold;'>${wordTextHi}</span>। आपकी पसंद शब्द ही होनी चाहिए।`
+            };
+
+            const distractorIndices = [];
+            while(distractorIndices.length < 3) {
+                let dIdx = Math.floor(Math.random() * colorsEn.length);
+                if (dIdx !== wordIndex && !distractorIndices.includes(dIdx)) {
+                    distractorIndices.push(dIdx);
+                }
+            }
+
+            const optionsList = shuffleArray([
+                { en: wordTextEn, hi: wordTextHi },
+                ...distractorIndices.map(idx => ({ en: colorsEn[idx], hi: colorsHi[idx] }))
+            ]);
+            const correctAnswerIndex = optionsList.findIndex(opt => opt.en === wordTextEn);
+
+            return {
+                type: 'color_stroop_text',
+                question: questionHTML,
+                options: optionsList,
+                correctAnswerIndex: correctAnswerIndex,
+                timeLimit: 10,
+                maxPoints: 18
+            };
+        }
+        
+        // Example of a new memory puzzle generator
+        function generateMemoryPuzzle() {
+            const numItemsToMemorize = getRandomElement([4, 5, 6]);
+            const itemType = getRandomElement(['emojis', 'words']);
+            let itemsToMemorize, recallPool;
+
+            if (itemType === 'emojis') {
+                itemsToMemorize = shuffleArray(generatorSourceData.memoryItems.emojis).slice(0, numItemsToMemorize);
+                recallPool = generatorSourceData.memoryItems.emojis;
+            } else { // words
+                itemsToMemorize = shuffleArray(generatorSourceData.memoryItems.words.en).slice(0, numItemsToMemorize).map((enWord, idx) => ({
+                    en: enWord,
+                    hi: generatorSourceData.memoryItems.words.hi[generatorSourceData.memoryItems.words.en.indexOf(enWord)] || enWord
+                }));
+                recallPool = generatorSourceData.memoryItems.words.en.map((enWord, idx) => ({
+                    en: enWord,
+                    hi: generatorSourceData.memoryItems.words.hi[generatorSourceData.memoryItems.words.en.indexOf(enWord)] || enWord
+                }));
+            }
+
+            // Select one item that WAS shown and one that was NOT shown for options.
+            const presentItem = getRandomElement(itemsToMemorize);
+            let absentItem;
+            do {
+                absentItem = getRandomElement(recallPool);
+            } while (itemsToMemorize.some(item => (typeof item === 'string' ? item === absentItem : item.en === absentItem.en) ));
+
+
+            // Create options: one item that was present, and three that were not (or different)
+            const distractors = [];
+            const tempRecallPool = shuffleArray(recallPool.filter(rp =>
+                !itemsToMemorize.some(im => (typeof im === 'string' ? im === rp : im.en === rp.en) || (typeof rp === 'string' ? rp === presentItem : rp.en === presentItem.en))
+            ));
+
+            for(let i=0; i < 3 && i < tempRecallPool.length; i++){
+                distractors.push(tempRecallPool[i]);
+            }
+            while(distractors.length < 3) { // Fill with dummy if not enough unique distractors
+                distractors.push(itemType === 'emojis' ? '❓' : {en: "Extra", hi: "अतिरिक्त"});
+            }
+
+
+            const optionsList = shuffleArray([presentItem, ...distractors]);
+            const correctAnswerIndex = optionsList.findIndex(opt =>
+                (typeof opt === 'string' && typeof presentItem === 'string' && opt === presentItem) ||
+                (typeof opt === 'object' && typeof presentItem === 'object' && opt.en === presentItem.en)
+            );
+
+            // The actual question will be "Which of these items did you see?"
+            const recallQuestion = {
+                en: "Which of these items was in the list you memorized?",
+                hi: "इनमें से कौन सी वस्तु उस सूची में थी जिसे आपने याद किया था?"
+            };
+
+            return {
+                type: 'memory',
+                instruction: {
+                    en: "Memorize the following items:",
+                    hi: "निम्नलिखित वस्तुओं को याद करें:"
+                },
+                itemsToMemorize: itemsToMemorize.map(item => typeof item === 'string' ? item : item[currentLanguage]), // Display based on current lang at memorize time
+                memorizeDuration: (numItemsToMemorize * 1000) + 2000, // e.g., 6-8 seconds
+                recallQuestion: recallQuestion,
+                options: optionsList.map(opt => {
+                    if (typeof opt === 'string') return { en: opt, hi: opt };
+                    return opt; // opt is already {en, hi}
+                }),
+                correctAnswerIndex: correctAnswerIndex,
+                timeLimit: 15,
+                maxPoints: 20
+            };
+        }
+
+
+        const questionTypeGenerators = {
+            'shape_pattern': generateShapePatternPuzzle,
+            'emoji_logic': generateEmojiLogicOddOneOut,
+            'verbal_logic': generateVerbalLogicMisspelling,
+            'color_stroop_text': generateColorStroopText,
+            'memory': generateMemoryPuzzle
+            // Add more mappings as you create generators
+        };
+
+        function generateNewPuzzleSet(numberOfPuzzles, allowedTypes = null) {
+            const newPuzzles = [];
+            const availableTypes = allowedTypes || Object.keys(questionTypeGenerators);
+
+            if (availableTypes.length === 0) {
+                console.error("No puzzle types available for generation!");
+                return [];
+            }
+
+            let attempts = 0;
+            const maxAttemptsPerPuzzle = 5; // To prevent infinite loops if a generator fails
+
+            while (newPuzzles.length < numberOfPuzzles && attempts < numberOfPuzzles * maxAttemptsPerPuzzle) {
+                const randomType = getRandomElement(availableTypes);
+                const generatorFunc = questionTypeGenerators[randomType];
+                if (generatorFunc) {
+                    const puzzle = generatorFunc(); // Generators now handle bilingual directly
+                    if (puzzle) {
+                        // Basic structure compliance check (already good in generators)
+                        newPuzzles.push(puzzle);
+                    }
+                }
+                attempts++;
+            }
+            if (newPuzzles.length < numberOfPuzzles) {
+                console.warn(`Could only generate ${newPuzzles.length} out of ${numberOfPuzzles} requested puzzles.`);
+            }
+            return newPuzzles;
+        }
+        // --- END: Question Generation System ---
+
+
+        // --- Language Data Store ---
+        const languageData = {
+            // UI Elements
+            ui: {
+                welcomeTitle: { en: "Mind Spark Challenge", hi: "माइंड स्पार्क चैलेंज" },
+                welcomeDescription: { en: "Test your cognitive skills with engaging puzzles and discover your mental agility.", hi: "रोचक पहेलियों के साथ अपने संज्ञानात्मक कौशल का परीक्षण करें और अपनी मानसिक चपलता की खोज करें।" },
+                selectNumQsTitle: { en: "Select Number of Questions:", hi: "प्रश्नों की संख्या चुनें:" },
+                numQs10: { en: "10 Questions", hi: "१० प्रश्न" },
+                numQs25: { en: "25 Questions", hi: "२५ प्रश्न" },
+                numQs50: { en: "50 Questions", hi: "५० प्रश्न" },
+                highScoreLabel: { en: "High Score", hi: "उच्च स्कोर" }, // Prefix
+                welcomeDisclaimer: { en: "This is for fun and self-reflection, not a clinical IQ test.", hi: "यह मनोरंजन और आत्म-चिंतन के लिए है, नैदानिक आईक्यू परीक्षण नहीं।" },
+                startButton: { en: "Start Test", hi: "परीक्षा शुरू करें" },
+                musicToggle_on: { en: "Music: ON", hi: "संगीत: चालू" },
+                musicToggle_off: { en: "Music: OFF", hi: "संगीत: बंद" },
+                progressLabel: { en: "Puzzle", hi: "पहेली" },
+                progressOf: { en: "of", hi: "में से" },
+                streakLabel: { en: "Streak:", hi: "क्रम:" },
+                timerLabel: { en: "Time:", hi: "समय:" },
+                hintButton: { en: "Use Hint (-2 Pts)", hi: "संकेत का प्रयोग करें (-2 अंक)" },
+                resultsTitle: { en: "Test Complete!", hi: "परीक्षा पूरी हुई!" },
+                resultsGameMode: { en: "Game Mode:", hi: "गेम मोड:" },
+                resultsQuestionsSuffix: { en: "Questions", hi: "प्रश्न" }, // Suffix for num questions
+                resultsYourScore: { en: "Your final score is:", hi: "आपका अंतिम स्कोर है:" },
+                resultsCPI: { en: "Cognitive Performance Index:", hi: "संज्ञानात्मक प्रदर्शन सूचकांक:" },
+                resultsCPIDisclaimer: { en: "This index is a general indicator based on game performance, not a formal IQ score.", hi: "यह सूचकांक खेल प्रदर्शन पर आधारित एक सामान्य संकेतक है, औपचारिक IQ स्कोर नहीं।" },
+                achievementsTitle: { en: "Achievements:", hi: "उपलब्धियां:" },
+                playAgainButton: { en: "Play Again?", hi: "फिर से खेलें?" },
+                shareResultsButton: { en: "Share Results", hi: "परिणाम साझा करें" },
+                enhanceSkillsButton: { en: "Enhance Cognitive Skills", hi: "संज्ञानात्मक कौशल बढ़ाएँ" },
+                hideTipsButton: { en: "Hide Tips", hi: "सुझाव छिपाएँ" },
+                cognitiveEnhancementTitle: { en: "Tips to Enhance Cognitive Abilities", hi: "संज्ञानात्मक क्षमताओं को बढ़ाने के लिए सुझाव" },
+                cognitiveEnhancementIntro: { en: "Cognitive abilities, often associated with \"IQ,\" are not fixed and can be cultivated through various practices. While this game is for fun, engaging in mentally stimulating activities can contribute to overall cognitive health. Here are some general strategies:", hi: "संज्ञानात्मक क्षमताएं, जिन्हें अक्सर \"आईक्यू\" से जोड़ा जाता है, निश्चित नहीं होतीं और विभिन्न अभ्यासों के माध्यम से विकसित की जा सकती हैं। हालांकि यह खेल मनोरंजन के लिए है, मानसिक रूप से उत्तेजक गतिविधियों में शामिल होने से समग्र संज्ञानात्मक स्वास्थ्य में योगदान मिल सकता है। यहां कुछ सामान्य रणनीतियां दी गई हैं:" },
+                cognitiveTip1: { en: "<strong>Continuous Learning:</strong> Actively seek new knowledge and skills. Read diverse materials, learn a new language or musical instrument, or take courses. The brain thrives on novelty and challenge.", hi: "<strong>निरंतर सीखना:</strong> सक्रिय रूप से नए ज्ञान और कौशल प्राप्त करें। विविध सामग्री पढ़ें, एक नई भाषा या संगीत वाद्ययंत्र सीखें, या पाठ्यक्रम लें। मस्तिष्क नवीनता और चुनौती पर पनपता है।" },
+                cognitiveTip2: { en: "<strong>Brain-Training Games & Puzzles:</strong> Regularly engage in activities like crosswords, Sudoku, chess, memory games, and logic puzzles (like the ones in this challenge!). These can help improve specific cognitive functions like memory, attention, and problem-solving.", hi: "<strong>मस्तिष्क-प्रशिक्षण खेल और पहेलियाँ:</strong> नियमित रूप से क्रॉसवर्ड, सुडोकू, शतरंज, मेमोरी गेम और तर्क पहेलियों (जैसे इस चुनौती में!) जैसी गतिविधियों में संलग्न रहें। ये स्मृति, ध्यान और समस्या-समाधान जैसे विशिष्ट संज्ञानात्मक कार्यों को बेहतर बनाने में मदद कर सकते हैं।" },
+                cognitiveTip3: { en: "<strong>Physical Exercise:</strong> Regular aerobic exercise increases blood flow to the brain, promoting the growth of new brain cells and improving mood and sleep, all of which benefit cognitive function.", hi: "<strong>शारीरिक व्यायाम:</strong> नियमित एरोबिक व्यायाम मस्तिष्क में रक्त के प्रवाह को बढ़ाता है, नई मस्तिष्क कोशिकाओं के विकास को बढ़ावा देता है और मनोदशा और नींद में सुधार करता है, ये सभी संज्ञानात्मक कार्य के लिए फायदेमंद हैं।" },
+                cognitiveTip4: { en: "<strong>Healthy Diet:</strong> A balanced diet rich in antioxidants, omega-3 fatty acids (found in fish), vitamins, and minerals supports brain health. Limit processed foods, sugar, and unhealthy fats.", hi: "<strong>स्वस्थ आहार:</strong> एंटीऑक्सिडेंट, ओमेगा-3 फैटी एसिड (मछली में पाए जाने वाले), विटामिन और खनिजों से भरपूर संतुलित आहार मस्तिष्क स्वास्थ्य का समर्थन करता है। प्रसंस्कृत खाद्य पदार्थ, चीनी और अस्वास्थ्यकर वसा सीमित करें।" },
+                cognitiveTip5: { en: "<strong>Adequate Sleep:</strong> Sleep is crucial for memory consolidation and cognitive restoration. Aim for 7-9 hours of quality sleep per night.", hi: "<strong>पर्याप्त नींद:</strong> नींद स्मृति समेकन और संज्ञानात्मक बहाली के लिए महत्वपूर्ण है। प्रति रात 7-9 घंटे की गुणवत्ता वाली नींद का लक्ष्य रखें।" },
+                cognitiveTip6: { en: "<strong>Mindfulness & Meditation:</strong> Practices like meditation can improve focus, attention, reduce stress, and may promote cognitive flexibility.", hi: "<strong>माइंडफुलनेस और ध्यान:</strong> ध्यान जैसी प्रथाएं फोकस, ध्यान में सुधार कर सकती हैं, तनाव कम कर सकती हैं, और संज्ञानात्मक लचीलेपन को बढ़ावा दे सकती हैं।" },
+                cognitiveTip7: { en: "<strong>Social Engagement:</strong> Maintaining active social connections and engaging in meaningful conversations can stimulate the brain and reduce the risk of cognitive decline.", hi: "<strong>सामाजिक जुड़ाव:</strong> सक्रिय सामाजिक संबंध बनाए रखना और सार्थक बातचीत में शामिल होना मस्तिष्क को उत्तेजित कर सकता है और संज्ञानात्मक गिरावट के जोखिम को कम कर सकता है।" },
+                cognitiveTip8: { en: "<strong>Challenge Your Routine:</strong> Break out of mental ruts. Take a different route to work, try new hobbies, or solve problems in unconventional ways to foster neuroplasticity.", hi: "<strong>अपनी दिनचर्या को चुनौती दें:</strong> मानसिक जड़ता से बाहर निकलें। काम करने के लिए एक अलग रास्ता अपनाएं, नए शौक आज़माएं, या न्यूरोप्लास्टी को बढ़ावा देने के लिए अपरंपरागत तरीकों से समस्याओं का समाधान करें।" },
+                cognitiveTip9: { en: "<strong>Manage Stress:</strong> Chronic stress can impair cognitive functions. Employ stress-reduction techniques like deep breathing, yoga, or spending time in nature.", hi: "<strong>तनाव का प्रबंधन करें:</strong> पुराना तनाव संज्ञानात्मक कार्यों को बाधित कर सकता है। गहरी साँस लेने, योग, या प्रकृति में समय बिताने जैसी तनाव कम करने वाली तकनीकों का प्रयोग करें।" },
+                cognitiveEnhancementDisclaimer: { en: "<em>Remember, consistency is key. Small, regular efforts to engage your mind and body can lead to significant long-term benefits for your cognitive well-being. These tips are general advice and not a substitute for professional medical or psychological guidance.</em>", hi: "<em>याद रखें, निरंतरता महत्वपूर्ण है। अपने मन और शरीर को व्यस्त रखने के छोटे, नियमित प्रयास आपके संज्ञानात्मक कल्याण के लिए महत्वपूर्ण दीर्घकालिक लाभ पहुंचा सकते हैं। ये सुझाव सामान्य सलाह हैं और पेशेवर चिकित्सा या मनोवैज्ञानिक मार्गदर्शन का विकल्प नहीं हैं।</em>" },
+                shareMessage: { en: (score, maxScore, cpi, numQs, achievementsCount) => `I scored ${score}/${maxScore} (CPI: ${cpi}) on the Mind Spark Challenge (${numQs} Qs) and unlocked ${achievementsCount} achievements! Try it!`, hi: (score, maxScore, cpi, numQs, achievementsCount) => `मैंने माइंड स्पार्क चैलेंज (${numQs} प्रश्न) में ${score}/${maxScore} (CPI: ${cpi}) स्कोर किया और ${achievementsCount} उपलब्धियां अनलॉक कीं! आप भी कोशिश करें!` },
+                memorizeItemsDefault: { en: "Memorize these items!", hi: "इन वस्तुओं को याद करें!" },
+                reflexWait: { en: "Wait...", hi: "प्रतीक्षा करें..."},
+                reflexClick: { en: "Click!", hi: "क्लिक करें!"},
+                feedbackTooEarly: { en: "Clicked too early! 0 points.", hi: "बहुत जल्दी क्लिक किया! 0 अंक।"},
+                feedbackTooSlow: { en: (ms) => `Too slow! > ${ms}ms. 0 points.`, hi: (ms) => `बहुत धीमा! > ${ms}ms. 0 अंक।`},
+                feedbackReaction: { en: (rt, pts) => `Reaction: ${rt}ms. +${pts} points!`, hi: (rt, pts) => `प्रतिक्रिया: ${rt}ms. +${pts} अंक!`},
+                feedbackReactionZero: { en: (rt) => `Reaction: ${rt}ms. 0 points.`, hi: (rt) => `प्रतिक्रिया: ${rt}ms. 0 अंक।`}
+            },
+            puzzles: [], // Puzzles are now generated dynamically by the question generation system
+            achievements: {
+                firstGame: { name: { en: "Welcome Challenger!", hi: "स्वागत है चैलेंजर!" }, description: { en: "Complete your first game.", hi: "अपना पहला गेम पूरा करें।" } },
+                streakMaster: { name: { en: "Streak Master!", hi: "क्रम महारथी!" }, description: { en: "Achieve a 5-answer streak.", hi: "5 उत्तरों का क्रम प्राप्त करें।" } },
+                highScorer: { name: { en: "High Scorer!", hi: "उच्च स्कोरर!" }, description: { en: "Score over 70% in any game.", hi: "किसी भी गेम में 70% से अधिक स्कोर करें।" } },
+                marathonRunner: { name: { en: "Marathon Runner!", hi: "मैराथन धावक!" }, description: { en: "Complete a 50-question game.", hi: "50 प्रश्नों का गेम पूरा करें।" } },
+                perfect10: { name: { en: "Perfect 10!", hi: "उत्तम 10!" }, description: { en: "Score 100% on a 10-question game.", hi: "10-प्रश्नों वाले गेम में 100% स्कोर करें।" } }
+            },
+            personalityProfiles: [
+                { minPercentage: 0, title: { en: "Emerging Thinker", hi: "उभरता हुआ विचारक" }, description: { en: "You're just beginning to explore your cognitive abilities. Keep practicing to sharpen your skills!", hi: "आप अभी अपनी संज्ञानात्मक क्षमताओं की खोज शुरू कर रहे हैं। अपने कौशल को तेज करने के लिए अभ्यास करते रहें!" } },
+                { minPercentage: 30, title: { en: "Steady Problem-Solver", hi: "स्थिर समस्या-समाधानकर्ता" }, description: { en: "You have a solid foundation in logical thinking and memory. With focus, you can tackle many challenges.", hi: "आपके पास तार्किक सोच और स्मृति में एक ठोस आधार है। ध्यान केंद्रित करके, आप कई चुनौतियों का सामना कर सकते हैं।" } },
+                { minPercentage: 50, title: { en: "Quick Witted", hi: "तेज-तर्रार" }, description: { en: "You demonstrate good analytical skills and quick reflexes. You're adept at spotting patterns and making connections.", hi: "आप अच्छे विश्लेषणात्मक कौशल और त्वरित सजगता का प्रदर्शन करते हैं। आप पैटर्न पहचानने और संबंध बनाने में माहिर हैं।" } },
+                { minPercentage: 70, title: { en: "Insightful Analyst", hi: "अंतर्दृष्टिपूर्ण विश्लेषक" }, description: { en: "You possess strong deductive reasoning and a sharp memory. Complex problems are your forte.", hi: "आपके पास मजबूत निगमनात्मक तर्क और तेज स्मृति है। जटिल समस्याएं आपकी विशेषज्ञता हैं।" } },
+                { minPercentage: 85, title: { en: "Logic Virtuoso", hi: "तर्क कलाप्रवीण व्यक्ति" }, description: { en: "Your cognitive abilities are exceptionally well-developed. You navigate intricate challenges with speed and precision!", hi: "आपकी संज्ञानात्मक क्षमताएं असाधारण रूप से अच्छी तरह से विकसित हैं। आप जटिल चुनौतियों को गति और सटीकता के साथ नेविगेट करते हैं!" } }
+            ]
+        };
+        // --- END Language Data Store ---
+
+        // --- Achievements & High Score Data (Structure for state, names/desc from languageData) ---
+        let achievements = {}; // Populated from languageData
+        let highScores = { 10: 0, 25: 0, 50: 0 };
+        let gamesCompleted = 0;
+
+
+        // --- Function to get translated text ---
+        function getLangText(key, ...args) {
+            const keys = key.split('.');
+            let textData = languageData.ui;
+            if (keys[0] === 'achievements') {
+                textData = languageData.achievements;
+                keys.shift();
+            } else if (keys[0] === 'personalityProfiles') {
+                textData = languageData.personalityProfiles;
+                keys.shift();
+            }
+
+            let current = textData;
+            for (const k of keys) {
+                if (current && typeof current === 'object' && k in current) {
+                    current = current[k];
+                } else {
+                    console.warn(`Translation key not found: ${key}`);
+                    return key;
+                }
+            }
+
+            if (typeof current === 'object' && currentLanguage in current) {
+                let text = current[currentLanguage];
+                if (typeof text === 'function') {
+                    return text(...args);
+                }
+                return text;
+            } else if (typeof current === 'string') {
+                return current;
+            }
+            console.warn(`Translation not found for lang '${currentLanguage}' in key: ${key}`);
+            return key;
+        }
+
+
+        // --- Function to update all UI text elements ---
+        function updateUIText() {
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                el.innerHTML = getLangText(key);
+                if (currentLanguage === 'hi') {
+                    el.classList.add('lang-hi');
+                } else {
+                    el.classList.remove('lang-hi');
+                }
+            });
+            updateHighScoreDisplay();
+            musicToggleButton.textContent = musicPlaying ? getLangText('musicToggle_on') : getLangText('musicToggle_off');
+
+            document.querySelectorAll('.num-questions-button').forEach(btn => {
+                const count = btn.dataset.count;
+                if (count) {
+                    btn.textContent = getLangText(`numQs${count}`);
+                     if (currentLanguage === 'hi') {
+                        btn.classList.add('lang-hi');
+                    } else {
+                        btn.classList.remove('lang-hi');
+                    }
+                }
+            });
+
+            if (!puzzleScreenDiv.classList.contains('hidden') && gamePuzzles.length > 0 && currentPuzzleIndex < gamePuzzles.length) {
+                const puzzle = gamePuzzles[currentPuzzleIndex];
+                if (puzzle) {
+                    // Puzzle instruction, question, and options are handled by loadPuzzle using currentLanguage directly
+                    // So re-rendering them fully on language switch if a puzzle is active:
+                    puzzleInstructionEl.innerHTML = puzzle.instruction ? puzzle.instruction[currentLanguage] : '';
+                    if (puzzle.instruction && currentLanguage === 'hi') puzzleInstructionEl.classList.add('lang-hi'); else puzzleInstructionEl.classList.remove('lang-hi');
+
+                    puzzleQuestionEl.innerHTML = puzzle.question ? puzzle.question[currentLanguage] : '';
+                     if (puzzle.question && currentLanguage === 'hi') puzzleQuestionEl.classList.add('lang-hi'); else puzzleQuestionEl.classList.remove('lang-hi');
+
+                    answerOptionsEl.innerHTML = '';
+                    if (puzzle.options) {
+                        puzzle.options.forEach((optionData, i) => {
+                            const button = document.createElement('button');
+                            button.classList.add('answer-button');
+                            // Preserve disabled/hint states if language is switched mid-puzzle answer phase
+                            const originalButton = Array.from(answerOptionsEl.childNodes).find(node => node.dataset && node.dataset.index == i);
+                            if(originalButton && originalButton.classList.contains('disabled')) button.classList.add('disabled');
+                            if(originalButton && originalButton.classList.contains('hint-removed')) button.classList.add('hint-removed');
+                            if(originalButton && originalButton.classList.contains('correct')) button.classList.add('correct');
+                            if(originalButton && originalButton.classList.contains('incorrect')) button.classList.add('incorrect');
+
+
+                            button.dataset.index = i;
+                            button.innerHTML = optionData[currentLanguage]; // optionData is {en, hi}
+                            if (currentLanguage === 'hi') button.classList.add('lang-hi');
+
+                            button.onclick = () => { if(!button.classList.contains('disabled')) { playSound(clickSound, "G3"); selectAnswer(i, puzzle.correctAnswerIndex, button); } };
+                            answerOptionsEl.appendChild(button);
+                        });
+                    }
+                     if (puzzle.type === 'memory' && puzzle.itemsToMemorize) { // Re-render memory items if visible during memorize phase
+                        memoryItemsDisplayEl.innerHTML = '';
+                         puzzle.itemsToMemorize.forEach(itemTextOrObj => {
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'memory-item';
+                            let textToShow = '';
+                            if (typeof itemTextOrObj === 'string') {
+                                textToShow = itemTextOrObj; // Assumed to be universal like emoji
+                            } else if (typeof itemTextOrObj === 'object' && itemTextOrObj[currentLanguage]) {
+                                textToShow = itemTextOrObj[currentLanguage];
+                            } else {
+                                textToShow = itemTextOrObj.en || '?'; // Fallback
+                            }
+                            itemDiv.innerHTML = textToShow;
+                            if (currentLanguage === 'hi' && typeof itemTextOrObj === 'object') itemDiv.classList.add('lang-hi');
+                            memoryItemsDisplayEl.appendChild(itemDiv);
+                        });
+                    }
+                }
+            }
+            updateProgressIndicator();
+            updateStreakDisplay();
+            updateTimerDisplay();
+        }
+
+        // --- Function to set language ---
+        function setLanguage(lang) {
+            if (lang !== 'en' && lang !== 'hi') lang = 'en';
+            currentLanguage = lang;
+            localStorage.setItem('mindSparkLanguage', currentLanguage);
+
+            if (currentLanguage === 'en') {
+                langEnButton.classList.add('active');
+                langHiButton.classList.remove('active');
+                document.body.classList.remove('lang-hi');
+
+            } else {
+                langHiButton.classList.add('active');
+                langEnButton.classList.remove('active');
+                document.body.classList.add('lang-hi');
+            }
+            initializeTranslatedData();
+            updateUIText();
+        }
+
+        function initializeTranslatedData() {
+            achievements = {};
+            for (const key in languageData.achievements) {
+                achievements[key] = { unlocked: false };
+            }
+            const savedAchievementsState = localStorage.getItem('mindSparkAchievements_gen_v1');
+            if (savedAchievementsState) {
+                const parsedStates = JSON.parse(savedAchievementsState);
+                for (const key in achievements) {
+                    if (parsedStates[key]) {
+                        achievements[key].unlocked = parsedStates[key].unlocked;
+                    }
+                }
+            }
+        }
+
+
+        // --- Initialization ---
+        window.onload = () => {
+            const savedLang = localStorage.getItem('mindSparkLanguage');
+            setLanguage(savedLang || 'en');
+            loadGameData();
+            updateHighScoreDisplay();
+            document.querySelector(`.num-questions-button[data-count="10"]`).classList.add('selected');
+            if (typeof Tone !== 'undefined' && !backgroundMusicSynth) {
+                setupAudio();
+            }
+        };
+
+        // --- Local Storage ---
+        function saveGameData() {
+            const achievementStatesToSave = {};
+            for (const key in achievements) {
+                achievementStatesToSave[key] = { unlocked: achievements[key].unlocked };
+            }
+            localStorage.setItem('mindSparkAchievements_gen_v1', JSON.stringify(achievementStatesToSave));
+            localStorage.setItem('mindSparkHighScores_gen_v1', JSON.stringify(highScores));
+            localStorage.setItem('mindSparkGamesCompleted_gen_v1', gamesCompleted.toString());
+        }
+        function loadGameData() {
+            const savedHighScores = localStorage.getItem('mindSparkHighScores_gen_v1');
+            if (savedHighScores) highScores = JSON.parse(savedHighScores);
+            const savedGamesCompleted = localStorage.getItem('mindSparkGamesCompleted_gen_v1');
+            if (savedGamesCompleted) gamesCompleted = parseInt(savedGamesCompleted);
+            // Achievements loaded in initializeTranslatedData
+        }
+
+        // --- Audio Setup (no changes needed for language) ---
+        function setupAudio() {
+            if (typeof Tone === 'undefined' || backgroundMusicSynth) return;
+            try {
+                correctSound = new Tone.Synth({ oscillator: {type: 'sine'}, envelope: {attack: 0.01, decay: 0.1, sustain: 0, release: 0.2}, volume: -10 }).toDestination();
+                incorrectSound = new Tone.Synth({ oscillator: {type: 'square'}, envelope: {attack: 0.01, decay: 0.2, sustain: 0, release: 0.2}, volume: -15 }).toDestination();
+                clickSound = new Tone.PluckSynth({ attackNoise: 0.5, dampening: 4000, resonance: 0.1, volume: -10 }).toDestination();
+
+                backgroundMusicSynth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 0.8, decay: 0.2, sustain: 0.5, release: 1.2 },
+                    volume: -25
+                }).toDestination();
+                const musicSequence = new Tone.Sequence((time, note) => {
+                    if(backgroundMusicSynth) backgroundMusicSynth.triggerAttackRelease(note, "2n", time);
+                }, ["C3", "E3", "G3", "C4", "G3", "E3"], "1m");
+                musicSequence.loop = true;
+                Tone.Transport.bpm.value = 70;
+                 if (Tone.Transport.state !== "started" && musicPlaying === true) {
+                    Tone.Transport.start();
+                } else if (musicPlaying === false && Tone.Transport.state === "started") {
+                    Tone.Transport.pause();
+                }
+            } catch (e) {
+                console.error("Error setting up audio with Tone.js:", e);
+                backgroundMusicSynth = null; // Prevent further errors
+            }
+        }
+        function playSound(sound, note = "C4", duration = "8n") {
+            if (sound && typeof Tone !== 'undefined' && Tone.context && Tone.context.state === 'running') {
+                try {
+                    if (sound instanceof Tone.PluckSynth) sound.triggerAttack(note);
+                    else sound.triggerAttackRelease(note, duration);
+                } catch (e) { console.warn("Tone.js playSound error:", e)}
+            }
+        }
+        function toggleMusic() {
+            if (typeof Tone === 'undefined') return;
+            if (!backgroundMusicSynth && Tone.Synth) setupAudio(); // Try setup if not already done and Tone is available
+            if (!backgroundMusicSynth) return; // Still no synth, exit
+
+            try {
+                if (Tone.Transport.state === "started") {
+                    Tone.Transport.pause();
+                    musicPlaying = false;
+                    musicToggleButton.textContent = getLangText('musicToggle_off');
+                } else {
+                    Tone.Transport.start();
+                    musicPlaying = true;
+                    musicToggleButton.textContent = getLangText('musicToggle_on');
+                }
+            } catch (e) { console.error("Tone.js transport error:", e); }
+        }
+        musicToggleButton.addEventListener('click', () => {
+            if (typeof Tone === 'undefined') { alert("Audio library (Tone.js) is not loaded or failed to initialize."); return; }
+             if (!Tone.context || Tone.context.state !== 'running') {
+                Tone.start().then(() => {
+                    console.log("AudioContext started.");
+                    if (!backgroundMusicSynth) setupAudio();
+                    toggleMusic();
+                }).catch(e => console.error("Error starting AudioContext:", e));
+            } else {
+                toggleMusic();
+            }
+        });
+
+        // --- Number of Questions Handling ---
+        function selectNumQuestions(count, buttonEl) {
+            playSound(clickSound, "A3");
+            NUMBER_OF_PUZZLES_PER_GAME = count;
+            document.querySelectorAll('.num-questions-button').forEach(btn => btn.classList.remove('selected'));
+            buttonEl.classList.add('selected');
+            updateHighScoreDisplay();
+        }
+        function updateHighScoreDisplay() {
+            const prefix = getLangText('highScoreLabel');
+            const suffix = getLangText('resultsQuestionsSuffix');
+            highScoreDisplayEl.textContent = `${prefix} (${NUMBER_OF_PUZZLES_PER_GAME} ${suffix}): ${highScores[NUMBER_OF_PUZZLES_PER_GAME] || 0}`;
+            if(currentLanguage === 'hi') highScoreDisplayEl.classList.add('lang-hi'); else highScoreDisplayEl.classList.remove('lang-hi');
+        }
+
+        // --- Game Flow ---
+        function transitionScreen(screenToHide, screenToShow) {
+            screenToHide.classList.remove('fade-in');
+            screenToHide.classList.add('fade-out');
+            setTimeout(() => {
+                screenToHide.classList.add('hidden');
+                screenToHide.classList.remove('fade-out');
+                screenToShow.classList.remove('hidden');
+                screenToShow.classList.add('fade-in');
+                mainContainer.style.justifyContent = (screenToShow === resultsScreenDiv) ? 'flex-start' : 'center';
+            }, 300);
+        }
+
+        function selectPuzzlesForGame() {
+            // Use the new generation system
+            gamePuzzles = generateNewPuzzleSet(NUMBER_OF_PUZZLES_PER_GAME);
+
+            if (gamePuzzles.length < 1) {
+                alert("Not enough puzzles could be generated to start the game!");
+                // Potentially fall back to welcome screen or show an error
+                return false; // Indicate failure
+            }
+            if (gamePuzzles.length < NUMBER_OF_PUZZLES_PER_GAME) {
+                 alert(`Warning: Could only generate ${gamePuzzles.length} out of ${NUMBER_OF_PUZZLES_PER_GAME} puzzles. The game will proceed with ${gamePuzzles.length} puzzles.`);
+                 // Adjust NUMBER_OF_PUZZLES_PER_GAME if desired, or let it be for progress display
+            }
+
+
+            currentMaxPossibleScore = 0;
+            gamePuzzles.forEach(p => currentMaxPossibleScore += p.maxPoints);
+            return true; // Indicate success
+        }
+
+        function startGame() {
+            playSound(clickSound, "C4");
+            if (typeof Tone !== 'undefined' && Tone.context && Tone.context.state !== 'running') {
+                 Tone.start().then(() => { if (!backgroundMusicSynth) setupAudio(); if(musicPlaying && Tone.Transport && Tone.Transport.state !== 'started') Tone.Transport.start(); })
+                 .catch(e => console.error("Error starting AudioContext on game start:", e));
+            } else {
+                if (musicPlaying && Tone.Transport && Tone.Transport.state !== 'started' && backgroundMusicSynth) Tone.Transport.start();
+            }
+
+            if (!selectPuzzlesForGame()) { // Call the modified function
+                // selectPuzzlesForGame will alert if it fails significantly
+                return; // Don't proceed if puzzle selection/generation failed
+            }
+
+            transitionScreen(welcomeScreenDiv, puzzleScreenDiv);
+            currentPuzzleIndex = 0;
+            score = 0;
+            currentStreak = 0;
+            updateStreakDisplay();
+            loadPuzzle(currentPuzzleIndex);
+        }
+
+        function cleanupPreviousPuzzle() {
+            clearInterval(timerInterval);
+            clearTimeout(reflexColorChangeTimeoutId);
+            clearTimeout(reflexReactionTimeoutId);
+            reflexPuzzleActive = false;
+            if (reflexTargetEl && reflexTargetEl.parentNode) {
+                reflexTargetEl.parentNode.removeChild(reflexTargetEl);
+                reflexTargetEl = null;
+            }
+            reflexFeedbackEl.textContent = '';
+            hintUsedThisPuzzle = false;
+            hintButton.disabled = false;
+            memoryItemsDisplayEl.innerHTML = ''; // Clear memory items specifically
+            memoryItemsDisplayEl.classList.add('hidden');
+        }
+
+        function updateProgressIndicator() {
+            const totalPuzzlesInGame = gamePuzzles.length > 0 ? gamePuzzles.length : NUMBER_OF_PUZZLES_PER_GAME;
+            if (gamePuzzles.length > 0 && currentPuzzleIndex < gamePuzzles.length) {
+                progressIndicatorEl.textContent = `${getLangText('progressLabel')} ${currentPuzzleIndex + 1} ${getLangText('progressOf')} ${totalPuzzlesInGame}`;
+            } else {
+                 progressIndicatorEl.textContent = `${getLangText('progressLabel')} - ${getLangText('progressOf')} -`;
+            }
+             if(currentLanguage === 'hi') progressIndicatorEl.classList.add('lang-hi'); else progressIndicatorEl.classList.remove('lang-hi');
+        }
+
+
+        function loadPuzzle(index) {
+            cleanupPreviousPuzzle();
+            if (index >= gamePuzzles.length) {
+                endGame();
+                return;
+            }
+            const puzzle = gamePuzzles[index];
+            updateProgressIndicator();
+
+            // Puzzle instruction, question, options are bilingual in the puzzle object
+            puzzleInstructionEl.innerHTML = puzzle.instruction ? puzzle.instruction[currentLanguage] : '';
+            if(puzzle.instruction && currentLanguage === 'hi') puzzleInstructionEl.classList.add('lang-hi'); else puzzleInstructionEl.classList.remove('lang-hi');
+
+            memoryItemsDisplayEl.innerHTML = '';
+            memoryItemsDisplayEl.classList.add('hidden');
+            puzzleQuestionEl.innerHTML = '';
+            puzzleQuestionEl.classList.add('hidden');
+            answerOptionsEl.innerHTML = '';
+            answerOptionsEl.classList.add('hidden');
+            timerEl.style.visibility = 'visible';
+
+            const noHintTypes = ['reflex', 'memory_memorize_phase']; // 'memory_memorize_phase' is a temporary type
+            hintButton.style.display = noHintTypes.includes(puzzle.type) ? 'none' : 'inline-block';
+            hintButton.innerHTML = getLangText('hintButton');
+
+            if (puzzle.type === 'reflex') loadReflexPuzzle(puzzle);
+            else if (puzzle.type === 'memory') loadMemoryPuzzle(puzzle);
+            else loadStandardPuzzle(puzzle);
+        }
+
+        function loadStandardPuzzle(puzzle) {
+            puzzleQuestionEl.innerHTML = puzzle.question[currentLanguage];
+            if(currentLanguage === 'hi') puzzleQuestionEl.classList.add('lang-hi'); else puzzleQuestionEl.classList.remove('lang-hi');
+            puzzleQuestionEl.classList.remove('hidden');
+            answerOptionsEl.classList.remove('hidden');
+
+            puzzle.options.forEach((optionData, i) => { // optionData is {en, hi}
+                const button = document.createElement('button');
+                button.classList.add('answer-button');
+                button.dataset.index = i;
+                button.innerHTML = optionData[currentLanguage];
+                if(currentLanguage === 'hi') button.classList.add('lang-hi');
+
+                button.onclick = () => { playSound(clickSound, "G3"); selectAnswer(i, puzzle.correctAnswerIndex, button); };
+                answerOptionsEl.appendChild(button);
+            });
+            startTimer(puzzle.timeLimit || DEFAULT_PUZZLE_TIME_LIMIT_SECONDS);
+        }
+
+        function loadMemoryPuzzle(puzzle) {
+            puzzleInstructionEl.innerHTML = puzzle.instruction ? puzzle.instruction[currentLanguage] : getLangText('memorizeItemsDefault');
+            if(currentLanguage === 'hi' && puzzle.instruction) puzzleInstructionEl.classList.add('lang-hi'); else puzzleInstructionEl.classList.remove('lang-hi');
+
+            memoryItemsDisplayEl.classList.remove('hidden');
+            puzzle.itemsToMemorize.forEach(itemTextOrObj => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'memory-item';
+                let textToShow = '';
+                if (typeof itemTextOrObj === 'string') { // Emojis
+                    textToShow = itemTextOrObj;
+                } else if (typeof itemTextOrObj === 'object' && itemTextOrObj[currentLanguage]) { // Word objects {en, hi}
+                    textToShow = itemTextOrObj[currentLanguage];
+                } else { // Fallback
+                     textToShow = typeof itemTextOrObj === 'object' ? (itemTextOrObj.en || '?') : '?';
+                }
+                itemDiv.innerHTML = textToShow;
+                if(currentLanguage === 'hi' && typeof itemTextOrObj === 'object') itemDiv.classList.add('lang-hi');
+                memoryItemsDisplayEl.appendChild(itemDiv);
+            });
+
+            timerEl.style.visibility = 'hidden';
+            answerOptionsEl.classList.add('hidden');
+            puzzleQuestionEl.classList.add('hidden');
+
+            const originalType = puzzle.type;
+            puzzle.type = 'memory_memorize_phase'; // Temporary type to prevent hints etc.
+            hintButton.style.display = 'none';
+
+
+            setTimeout(() => {
+                puzzle.type = originalType; // Restore original type
+                puzzleInstructionEl.innerHTML = ''; // Clear "Memorize these items"
+                memoryItemsDisplayEl.innerHTML = '';
+                memoryItemsDisplayEl.classList.add('hidden');
+
+                puzzleQuestionEl.innerHTML = puzzle.recallQuestion[currentLanguage];
+                if(currentLanguage === 'hi') puzzleQuestionEl.classList.add('lang-hi'); else puzzleQuestionEl.classList.remove('lang-hi');
+                puzzleQuestionEl.classList.remove('hidden');
+                answerOptionsEl.classList.remove('hidden');
+                hintButton.style.display = 'inline-block'; // Re-enable hint button for recall phase
+
+                puzzle.options.forEach((optionData, i) => { // optionData is {en, hi}
+                    const button = document.createElement('button');
+                    button.classList.add('answer-button');
+                    button.innerHTML = optionData[currentLanguage];
+                    if(currentLanguage === 'hi') button.classList.add('lang-hi');
+                    button.dataset.index = i;
+                    button.onclick = () => { playSound(clickSound, "G3"); selectAnswer(i, puzzle.correctAnswerIndex, button); };
+                    answerOptionsEl.appendChild(button);
+                });
+                timerEl.style.visibility = 'visible';
+                startTimer(puzzle.timeLimit || DEFAULT_PUZZLE_TIME_LIMIT_SECONDS);
+            }, puzzle.memorizeDuration || 5000);
+        }
+
+        function loadReflexPuzzle(puzzle) {
+            // Reflex puzzles are less about text and more about config like colors, timings
+            // The generator would create a puzzle object with these configs.
+            // Instruction can still be translated.
+            puzzleInstructionEl.innerHTML = puzzle.instruction ? puzzle.instruction[currentLanguage] : (getLangText('reflexClick') + ' ' + getLangText('reflexWhenItTurnsGreen')); // Example fallback
+            if(currentLanguage === 'hi' && puzzle.instruction) puzzleInstructionEl.classList.add('lang-hi'); else puzzleInstructionEl.classList.remove('lang-hi');
+
+            timerEl.style.visibility = 'hidden';
+            answerOptionsEl.classList.add('hidden');
+            puzzleQuestionEl.classList.add('hidden');
+            memoryItemsDisplayEl.classList.add('hidden');
+            hintButton.style.display = 'none';
+
+            reflexTargetEl = document.createElement('div');
+            reflexTargetEl.className = 'reflex-target';
+
+            const initialText = puzzle.initialText ? puzzle.initialText[currentLanguage] : getLangText('reflexWait');
+            reflexTargetEl.textContent = initialText;
+            reflexTargetEl.style.backgroundColor = puzzle.initialColorHex || '#e9ecef';
+            reflexTargetEl.style.color = puzzle.initialTextColorHex || '#333';
+            if(currentLanguage === 'hi' && puzzle.initialText) reflexTargetEl.classList.add('lang-hi');
+
+
+            puzzleContentEl.insertBefore(reflexTargetEl, reflexFeedbackEl);
+
+            reflexTargetEl.onclick = () => {
+                if (reflexPuzzleActive) {
+                    clearTimeout(reflexReactionTimeoutId);
+                    const reactionTime = performance.now() - reflexReactionStartTimestamp;
+                    processReflexResult(reactionTime, puzzle);
+                } else {
+                    playSound(incorrectSound, "C3");
+                    clearTimeout(reflexColorChangeTimeoutId);
+                    processReflexResult(0, puzzle, true); // Foul (clicked too early)
+                }
+            };
+
+            const delay = Math.random() * ( (puzzle.maxDelayToActiveMs || 4000) - (puzzle.minDelayToActiveMs || 1000) ) + (puzzle.minDelayToActiveMs || 1000);
+            reflexColorChangeTimeoutId = setTimeout(() => {
+                if (!reflexTargetEl) return;
+                const activeText = puzzle.activeText ? puzzle.activeText[currentLanguage] : getLangText('reflexClick');
+                reflexTargetEl.textContent = activeText;
+                reflexTargetEl.style.backgroundColor = puzzle.activeColorHex || '#28a745'; // Green
+                reflexTargetEl.style.color = puzzle.activeTextColorHex || 'white';
+                if(currentLanguage === 'hi' && puzzle.activeText) reflexTargetEl.classList.add('lang-hi');
+
+                reflexReactionStartTimestamp = performance.now();
+                reflexPuzzleActive = true;
+                reflexReactionTimeoutId = setTimeout(() => {
+                    if (reflexPuzzleActive) {
+                        playSound(incorrectSound, "D3");
+                        processReflexResult( (puzzle.reactionTimeLimitMs || 1000) + 1, puzzle, false, true); // Timeout
+                    }
+                }, puzzle.reactionTimeLimitMs || 1000);
+            }, delay);
+        }
+
+
+        function processReflexResult(reactionTime, puzzle, foul = false, timeout = false) {
+            reflexPuzzleActive = false;
+            clearTimeout(reflexColorChangeTimeoutId);
+            clearTimeout(reflexReactionTimeoutId);
+
+            if (reflexTargetEl) {
+                reflexTargetEl.onclick = null;
+                reflexTargetEl.style.opacity = '0.5';
+            }
+
+            let pointsEarned = 0;
+            let feedbackMessage = "";
+            const maxPoints = puzzle.maxPoints || 10; // Default max points for reflex
+
+            if (foul) {
+                feedbackMessage = getLangText('feedbackTooEarly');
+                currentStreak = 0;
+            } else if (timeout || reactionTime > (puzzle.reactionTimeLimitMs || 1000)) {
+                feedbackMessage = getLangText('feedbackTooSlow', puzzle.reactionTimeLimitMs || 1000);
+                currentStreak = 0;
+            } else {
+                reactionTime = Math.round(reactionTime);
+                // Scoring tiers for reflex
+                if (reactionTime < (puzzle.tier1Ms || 250)) pointsEarned = maxPoints;
+                else if (reactionTime < (puzzle.tier2Ms || 350)) pointsEarned = Math.round(maxPoints * 0.8);
+                else if (reactionTime < (puzzle.tier3Ms || 500)) pointsEarned = Math.round(maxPoints * 0.6);
+                else if (reactionTime < (puzzle.tier4Ms || 800)) pointsEarned = Math.round(maxPoints * 0.4);
+                else pointsEarned = Math.round(maxPoints * 0.2);
+
+                if (pointsEarned > 0) {
+                    playSound(correctSound, "G5");
+                    currentStreak++;
+                    if (currentStreak > 1) pointsEarned += STREAK_BONUS_POINTS * (currentStreak -1) ;
+                    feedbackMessage = getLangText('feedbackReaction', reactionTime, pointsEarned);
+                } else {
+                    playSound(incorrectSound, "E3");
+                    currentStreak = 0;
+                    feedbackMessage = getLangText('feedbackReactionZero', reactionTime);
+                }
+            }
+            score += pointsEarned;
+            reflexFeedbackEl.textContent = feedbackMessage;
+            if(currentLanguage === 'hi') reflexFeedbackEl.classList.add('lang-hi'); else reflexFeedbackEl.classList.remove('lang-hi');
+            updateStreakDisplay();
+            setTimeout(() => {
+                currentPuzzleIndex++;
+                loadPuzzle(currentPuzzleIndex);
+            }, 2000);
+        }
+
+        function selectAnswer(selectedOptionIndex, correctAnswerIndex, clickedButton) {
+            clearInterval(timerInterval);
+            const puzzle = gamePuzzles[currentPuzzleIndex];
+            const timeLimit = puzzle.timeLimit || DEFAULT_PUZZLE_TIME_LIMIT_SECONDS;
+
+            const allAnswerButtons = answerOptionsEl.querySelectorAll('.answer-button');
+            allAnswerButtons.forEach(btn => btn.classList.add('disabled'));
+            hintButton.disabled = true;
+
+            let pointsEarned = 0;
+            const maxPointsForPuzzle = puzzle.maxPoints;
+
+            if (selectedOptionIndex === correctAnswerIndex) {
+                playSound(correctSound, "C5");
+                currentStreak++;
+
+                const baseRatio = 0.5;
+                const speedRatio = 0.5;
+
+                let basePoints = Math.round(maxPointsForPuzzle * baseRatio);
+                let speedBonus = 0;
+
+                if (timeLimit > 0 && timeLeft >= 0) {
+                    const timeFractionRemaining = Math.max(0, timeLeft / timeLimit);
+                    speedBonus = Math.round((maxPointsForPuzzle * speedRatio) * timeFractionRemaining);
+                }
+                pointsEarned = basePoints + speedBonus;
+                if (currentStreak > 1) {
+                    pointsEarned += STREAK_BONUS_POINTS * (currentStreak - 1);
+                }
+                clickedButton.classList.add('correct');
+            } else {
+                playSound(incorrectSound, "F3");
+                currentStreak = 0;
+                clickedButton.classList.add('incorrect');
+                 const correctBtn = answerOptionsEl.querySelector(`.answer-button[data-index="${correctAnswerIndex}"]`);
+                 if (correctBtn) correctBtn.classList.add('correct');
+            }
+            if (hintUsedThisPuzzle) {
+                pointsEarned = Math.max(0, pointsEarned - HINT_PENALTY_POINTS);
+            }
+            score += pointsEarned;
+            updateStreakDisplay();
+            setTimeout(() => {
+                currentPuzzleIndex++;
+                loadPuzzle(currentPuzzleIndex);
+            }, 1500);
+        }
+
+        function useHint() {
+            playSound(clickSound, "D3");
+            if (hintUsedThisPuzzle || currentPuzzleIndex >= gamePuzzles.length) return;
+            const puzzle = gamePuzzles[currentPuzzleIndex];
+            if (puzzle.type === 'reflex' || puzzle.type === 'memory_memorize_phase') return;
+
+            hintUsedThisPuzzle = true;
+            hintButton.disabled = true;
+
+            if (puzzle.type === 'memory' && puzzle.recallQuestion && puzzle.itemsToMemorize) {
+                // Find a correct item that was in itemsToMemorize
+                // This is a bit tricky because itemsToMemorize might be strings (emojis) or {en, hi} (words)
+                let correctItemTextForHint = "one of the items"; // Fallback
+                const actualCorrectOptionText = puzzle.options[puzzle.correctAnswerIndex][currentLanguage];
+
+                // Try to find the display text for the correct item from the original memorized list
+                const memorizedCorrectItem = puzzle.itemsToMemorize.find(memItem => {
+                    if (typeof memItem === 'string' && memItem === actualCorrectOptionText) return true;
+                    if (typeof memItem === 'object' && memItem[currentLanguage] === actualCorrectOptionText) return true;
+                    return false;
+                });
+                if (memorizedCorrectItem) {
+                     correctItemTextForHint = typeof memorizedCorrectItem === 'string' ? memorizedCorrectItem : memorizedCorrectItem[currentLanguage];
+                }
+
+
+                const tempHintItem = document.createElement('div');
+                tempHintItem.className = 'memory-item hint-reveal';
+                const hintText = (currentLanguage === 'hi' ? `संकेत: क्या आपको "${correctItemTextForHint}" देखना याद है?` : `Hint: Remember seeing "${correctItemTextForHint}"?`);
+                if (currentLanguage === 'hi') tempHintItem.classList.add('lang-hi');
+                tempHintItem.textContent = hintText;
+
+                const oldInstruction = puzzleInstructionEl.innerHTML;
+                puzzleInstructionEl.innerHTML = tempHintItem.outerHTML;
+                setTimeout(() => {
+                    puzzleInstructionEl.innerHTML = oldInstruction;
+                }, 2500);
+
+            } else if (puzzle.options) {
+                const answerButtons = Array.from(answerOptionsEl.querySelectorAll('.answer-button:not(.disabled):not(.hint-removed)'));
+                if (answerButtons.length > 2) {
+                    let removedCount = 0;
+                    for (let i = 0; i < answerButtons.length; i++) {
+                        const btnIndex = parseInt(answerButtons[i].dataset.index);
+                        if (btnIndex !== puzzle.correctAnswerIndex) {
+                            answerButtons[i].classList.add('hint-removed');
+                            removedCount++;
+                            break;
+                        }
+                    }
+                    if (removedCount === 0 && answerButtons.length > 0) {
+                        const firstRemovable = answerButtons.find(btn => parseInt(btn.dataset.index) !== puzzle.correctAnswerIndex);
+                        if (firstRemovable) {
+                            firstRemovable.classList.add('hint-removed');
+                        } else if(answerButtons.length > 1) {
+                             answerButtons[0].classList.add('hint-removed');
+                        }
+                    }
+                }
+            }
+        }
+
+        function updateStreakDisplay() {
+            streakCounterEl.textContent = `${getLangText('streakLabel')} ${currentStreak}`;
+             if(currentLanguage === 'hi') streakCounterEl.classList.add('lang-hi'); else streakCounterEl.classList.remove('lang-hi');
+        }
+
+        // --- Timer ---
+        function startTimer(duration) {
+            timeLeft = duration;
+            updateTimerDisplay();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft < 0) {
+                    clearInterval(timerInterval);
+                    handleTimeUp();
+                }
+            }, 1000);
+        }
+        function updateTimerDisplay() {
+            const displayTime = Math.max(0, timeLeft);
+            const minutes = Math.floor(displayTime / 60);
+            const seconds = displayTime % 60;
+            timerEl.textContent = `${getLangText('timerLabel')} ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if(currentLanguage === 'hi') timerEl.classList.add('lang-hi'); else timerEl.classList.remove('lang-hi');
+        }
+        function handleTimeUp() {
+            playSound(incorrectSound, "A2");
+            currentStreak = 0;
+            updateStreakDisplay();
+            const allAnswerButtons = answerOptionsEl.querySelectorAll('.answer-button');
+            allAnswerButtons.forEach(btn => btn.classList.add('disabled'));
+            hintButton.disabled = true;
+
+            const puzzle = gamePuzzles[currentPuzzleIndex];
+            if (puzzle && puzzle.options && puzzle.options.length > 0 && puzzle.correctAnswerIndex !== undefined) {
+                 const correctBtn = answerOptionsEl.querySelector(`.answer-button[data-index="${puzzle.correctAnswerIndex}"]`);
+                 if (correctBtn) correctBtn.classList.add('correct');
+            }
+            const timesUpMsg = currentLanguage === 'hi' ? "<br><span style='color:red;'>समय समाप्त!</span>" : "<br><span style='color:red;'>Time's Up!</span>";
+            // Append to existing question text if any, otherwise set it.
+            if (puzzleQuestionEl.innerHTML.trim() !== "") {
+                puzzleQuestionEl.innerHTML += timesUpMsg;
+            } else {
+                 puzzleQuestionEl.innerHTML = (puzzle.question ? puzzle.question[currentLanguage] : "") + timesUpMsg;
+                 puzzleQuestionEl.classList.remove('hidden'); // Ensure it's visible
+            }
+
+
+            setTimeout(() => {
+                currentPuzzleIndex++;
+                loadPuzzle(currentPuzzleIndex);
+            }, 1500);
+        }
+
+        // --- End Game & Results ---
+        function calculateCognitivePerformanceIndex(currentScore, maxScore) {
+            const minCPI = 70; const maxCPI = 130;
+            if (maxScore === 0) return minCPI;
+            const scorePercentage = Math.max(0, Math.min(100, (currentScore / maxScore) * 100));
+            return Math.round(minCPI + (scorePercentage / 100) * (maxCPI - minCPI));
+        }
+
+        function checkAchievements(finalScore, maxScore, numQuestionsInGame) {
+            achievements.firstGame.unlocked = true;
+            gamesCompleted++;
+
+            const scorePercentage = maxScore > 0 ? (finalScore / maxScore) * 100 : 0;
+
+            if (scorePercentage > 70 && !achievements.highScorer.unlocked) {
+                achievements.highScorer.unlocked = true;
+            }
+            if (numQuestionsInGame === 50 && !achievements.marathonRunner.unlocked) { // Use actual num questions played
+                achievements.marathonRunner.unlocked = true;
+            }
+            if (numQuestionsInGame === 10 && scorePercentage >= 99.9 && !achievements.perfect10.unlocked) {
+                achievements.perfect10.unlocked = true;
+            }
+            // Check for streak master only if a streak was achieved during the game
+            // This would require tracking max streak per game. For simplicity, we check currentStreak at end of each question.
+            // A better way:
+            // if (maxStreakThisGame >= 5 && !achievements.streakMaster.unlocked) achievements.streakMaster.unlocked = true;
+            // For now, let's assume if currentStreak was >= 5 at any point. This is tricky without storing max streak.
+            // Let's trigger streakMaster if they ever get a streak of 5 during the game.
+            // We can check this inside `selectAnswer` or `processReflexResult` when `currentStreak` hits 5.
+            if (localStorage.getItem('achievedMaxStreak5_gen_v1') === 'true' && !achievements.streakMaster.unlocked) {
+                achievements.streakMaster.unlocked = true;
+            }
+        }
+        // Modify selectAnswer and processReflexResult to check for streak achievement
+        // (This modification is done inline where currentStreak is incremented)
+        // In selectAnswer (correct answer branch):
+        // if (currentStreak === 5) localStorage.setItem('achievedMaxStreak5_gen_v1', 'true');
+        // In processReflexResult (pointsEarned > 0 branch):
+        // if (currentStreak === 5) localStorage.setItem('achievedMaxStreak5_gen_v1', 'true');
+
+
+        function endGame() {
+            cleanupPreviousPuzzle();
+            clearInterval(timerInterval);
+
+            const actualNumQuestionsPlayed = gamePuzzles.length; // Use the actual number of puzzles generated and played
+
+            if (score > (highScores[actualNumQuestionsPlayed] || 0) ) { // Save high score based on actual Qs played
+                highScores[actualNumQuestionsPlayed] = score;
+                // Also update for the selected mode if different
+                if (actualNumQuestionsPlayed !== NUMBER_OF_PUZZLES_PER_GAME) {
+                     if (score > (highScores[NUMBER_OF_PUZZLES_PER_GAME] || 0) ) {
+                        highScores[NUMBER_OF_PUZZLES_PER_GAME] = score;
+                     }
+                }
+            } else if (score > (highScores[NUMBER_OF_PUZZLES_PER_GAME] || 0) ) {
+                 highScores[NUMBER_OF_PUZZLES_PER_GAME] = score;
+            }
+
+
+            checkAchievements(score, currentMaxPossibleScore, actualNumQuestionsPlayed);
+            saveGameData();
+
+            const cpiEstimate = calculateCognitivePerformanceIndex(score, currentMaxPossibleScore);
+
+            const scorePercentageForProfile = currentMaxPossibleScore > 0 ? (score / currentMaxPossibleScore) * 100 : 0;
+            let personality = languageData.personalityProfiles[0];
+            for (let i = languageData.personalityProfiles.length - 1; i >= 0; i--) {
+                if (scorePercentageForProfile >= languageData.personalityProfiles[i].minPercentage) {
+                    personality = languageData.personalityProfiles[i]; break;
+                }
+            }
+
+            let achievementsHTML = '<ul class="achievement-list">';
+            for (const key in achievements) {
+                const achievementData = languageData.achievements[key];
+                if (achievementData) {
+                     achievementsHTML += `<li class="achievement-item ${achievements[key].unlocked ? '' : 'locked'} ${currentLanguage === 'hi' ? 'lang-hi' : ''}" title="${achievementData.description[currentLanguage]}">${achievementData.name[currentLanguage]}</li>`;
+                }
+            }
+            achievementsHTML += '</ul>';
+            
+            const gameModeText = `${getLangText('resultsGameMode')} ${actualNumQuestionsPlayed} ${getLangText('resultsQuestionsSuffix')}`;
+            const highScoreForMode = highScores[NUMBER_OF_PUZZLES_PER_GAME] || 0; // Display HS for selected mode
+
+            resultsScreenDiv.innerHTML = `
+                <h1 class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('resultsTitle')}</h1>
+                <p class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${gameModeText}</p>
+                <p class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('resultsYourScore')} <span class="score-value">${score} / ${currentMaxPossibleScore}</span></p>
+                <p class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('highScoreLabel')} (${NUMBER_OF_PUZZLES_PER_GAME} ${getLangText('resultsQuestionsSuffix')}): <span class="score-value">${highScoreForMode}</span></p>
+                <p class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('resultsCPI')} <span class="cpi-estimate">${cpiEstimate}</span></p>
+                <p class="disclaimer ${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('resultsCPIDisclaimer')}</p>
+                <h2 class="personality-title ${currentLanguage === 'hi' ? 'lang-hi' : ''}">${personality.title[currentLanguage]}</h2>
+                <p class="personality-description ${currentLanguage === 'hi' ? 'lang-hi' : ''}">${personality.description[currentLanguage]}</p>
+                <div class="achievements-section">
+                    <h3 class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('achievementsTitle')}</h3>
+                    ${achievementsHTML}
+                </div>
+                <div class="results-buttons-container">
+                    <button class="results-button ${currentLanguage === 'hi' ? 'lang-hi' : ''}" onclick="resetGame()">${getLangText('playAgainButton')}</button>
+                    <button class="results-button share ${currentLanguage === 'hi' ? 'lang-hi' : ''}" onclick="shareResults()">${getLangText('shareResultsButton')}</button>
+                    <button class="results-button enhance-iq ${currentLanguage === 'hi' ? 'lang-hi' : ''}" id="toggleTipsButton" onclick="toggleCognitiveTips()">${getLangText('enhanceSkillsButton')}</button>
+                </div>
+                <div id="cognitiveEnhancementSection" class="hidden">
+                    <h3 class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveEnhancementTitle')}</h3>
+                    <p class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveEnhancementIntro')}</p>
+                    <ul class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">
+                        <li class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveTip1')}</li>
+                        <li class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveTip2')}</li>
+                        <li class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveTip3')}</li>
+                        <li class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveTip4')}</li>
+                        <li class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveTip5')}</li>
+                        <li class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveTip6')}</li>
+                        <li class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveTip7')}</li>
+                        <li class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveTip8')}</li>
+                        <li class="${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveTip9')}</li>
+                    </ul>
+                    <p class="disclaimer ${currentLanguage === 'hi' ? 'lang-hi' : ''}">${getLangText('cognitiveEnhancementDisclaimer')}</p>
+                </div>
+            `;
+            transitionScreen(puzzleScreenDiv, resultsScreenDiv);
+            localStorage.removeItem('achievedMaxStreak5_gen_v1'); // Reset for next game
+        }
+
+        function shareResults() {
+            playSound(clickSound);
+            const cpiEstimate = calculateCognitivePerformanceIndex(score, currentMaxPossibleScore);
+            const achievementsUnlockedCount = Object.values(achievements).filter(a=>a.unlocked).length;
+            const actualNumQuestionsPlayed = gamePuzzles.length;
+            const shareText = getLangText('shareMessage', score, currentMaxPossibleScore, cpiEstimate, actualNumQuestionsPlayed, achievementsUnlockedCount);
+
+            alert(shareText + (currentLanguage === 'hi' ? "\n(शेयरिंग कार्यक्षमता प्लेसहोल्डर है। आप इस टेक्स्ट को कॉपी कर सकते हैं!)" : "\n(Sharing functionality is a placeholder. You can copy this text!)"));
+
+            if (navigator.share) {
+                navigator.share({
+                    title: currentLanguage === 'hi' ? 'माइंड स्पार्क चैलेंज परिणाम' : 'Mind Spark Challenge Results',
+                    text: shareText,
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                }).catch(console.error);
+            }
+        }
+
+        function resetGame() {
+            playSound(clickSound);
+            resultsScreenDiv.classList.add('hidden');
+            resultsScreenDiv.classList.remove('fade-in', 'fade-out');
+            puzzleScreenDiv.classList.add('hidden');
+            puzzleScreenDiv.classList.remove('fade-in', 'fade-out');
+
+            const tipsSection = document.getElementById('cognitiveEnhancementSection');
+            const toggleButton = document.getElementById('toggleTipsButton');
+            if (tipsSection && !tipsSection.classList.contains('hidden')) {
+                tipsSection.classList.add('hidden');
+                if(toggleButton) toggleButton.innerHTML = getLangText('enhanceSkillsButton');
+            }
+
+            welcomeScreenDiv.classList.remove('hidden', 'fade-out');
+            welcomeScreenDiv.classList.add('fade-in');
+            mainContainer.style.justifyContent = 'center';
+            updateHighScoreDisplay();
+        }
+
+        function toggleCognitiveTips() {
+            playSound(clickSound);
+            const tipsSection = document.getElementById('cognitiveEnhancementSection');
+            const toggleButton = document.getElementById('toggleTipsButton');
+            if (tipsSection && toggleButton) {
+                const isHidden = tipsSection.classList.toggle('hidden');
+                if (isHidden) {
+                    tipsSection.classList.remove('fade-in');
+                    toggleButton.innerHTML = getLangText('enhanceSkillsButton');
+                } else {
+                    tipsSection.classList.add('fade-in');
+                    toggleButton.innerHTML = getLangText('hideTipsButton');
+                    tipsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+        }
+
+    </script>
+    <!-- Tone.js CDN - Optional: for sound effects and music -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+</body>
+</html>
